@@ -1,5 +1,5 @@
 ---
-import { ViewTransitions } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -15,8 +15,13 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
-
-    <ViewTransitions />
+    <link
+    rel="alternate"
+    type="application/rss+xml"
+    title="Facundo Blog"
+    href={new URL("rss.xml", Astro.site)}
+/>
+    <ClientRouter />
   </head>
   <body class="bg-gray-900">
     <main class="mb-10 max-w-5xl m-auto px-5 py-2">
