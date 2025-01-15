@@ -25,7 +25,7 @@ export const GET: APIRoute = async ({ params, request,site }) => {
             title: data.title,
             pubDate: data.date,
             description: data.description,
-            link: `posts/${filePath}`, // Path Relativo
+            link: `posts/${filePath?.split('/').slice(-1)[0].replace('.md', '')}`
         })),
         customData: `<language>es-ar</language>`,
       });
