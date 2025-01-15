@@ -7,31 +7,32 @@ import sanitizeHtml from 'sanitize-html'; // Importar correctamente sanitize-htm
 const parser = new MarkdownIt();
 
 export const GET: APIRoute = async ({ params, request, site }) => {
-  const blogPosts = await getCollection('blog');
-
-  return rss({
-    title: 'Facundo Blog',
-    description: 'Un simple blog sobre mis aventuras con Astro',
-    site: site ?? '',
-    items: blogPosts.map(({ data, filePath, body }) => ({
-      title: data.title,
-      pubDate: data.date,
-      description: data.description,
+    const blogPosts = await getCollection('blog');
+  
+    return rss({
+      title: 'Facundo Blog',
+      description: 'Un simple blog sobre mis aventuras con Astro',
+      site: site ?? '',
       xmlns: {
-        media: 'http://search.yahoo.com/mrss/',
+        media: 'http://search.yahoo.com/mrss/', // Define el espacio de nombres
       },
-      link: `posts/${filePath?.split('/').slice(-1)[0].replace('.md', '')}`,
-      content: sanitizeHtml(parser.render(body || ''), {
-        allowedTags: ['b', 'i', 'em', 'strong', 'a', 'img'], // Etiquetas permitidas
-      }),
-      customData: `<media:content
-        type="image/${data.image.format === 'jpg' ? 'jpeg' : 'png'}"
-        width="${data.image.width}"
-        height="${data.image.height}"
-        medium="image"
-        url="${site + data.image.src}" />
-      `,
-    })),
-    customData: `<language>es-ar</language>`,
-  });
-};
+      items: blogPosts.map(({ data, filePath, body }) => ({
+        title: data.title,
+        pubDate: data.date,
+        description: data.description,
+        link: `posts/${filePath?.split('/').slice(-1)[0].replace('.md', '')}`,
+        content: sanitizeHtml(parser.render(body || ''), {
+          allowedTags: ['b', 'i', 'em', 'strong', 'a', 'img'], // Lista de etiquetas permitidas
+        }),
+        customData: `<media:content
+          type="image/${data.image.format === 'jpg' ? 'jpeg' : 'png'}"
+          width="${data.image.width}"
+          height="${data.image.height}"
+          medium="image"
+          url="${site + data.image.src}" />
+        `,
+      })),
+      customData: `<language>es-ar</language>`,
+    });
+  };
+  
