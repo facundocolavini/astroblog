@@ -21,11 +21,11 @@ export const GET: APIRoute = async ({ params, request,site }) => {
         // Array of `<item>`s in output xml
         // See "Generating items" section for examples using content collections and glob imports
         // (optional) inject custom xml
-        items: blogPosts.map(({data,slug }) => ({
+        items: blogPosts.map(({data, filePath }) => ({
             title: data.title,
             pubDate: data.date,
             description: data.description,
-            link: `posts/${slug}`, // Path Relativo
+            link: `posts/${filePath}`, // Path Relativo
         })),
         customData: `<language>es-ar</language>`,
       });
